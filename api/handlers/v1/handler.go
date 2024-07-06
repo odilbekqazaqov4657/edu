@@ -78,6 +78,22 @@ func (h *handler) GetTeachersList(ctx *gin.Context) {
 
 }
 
+func (h *handler) UpdateTeacher(ctx *gin.Context) {
+
+	var req *models.Teacher
+
+	ctx.BindJSON(&req)
+
+	err := h.storage.TeacherRepo().UpdateTeacher(context.Background(), req)
+
+	if err != nil {
+		ctx.JSON(500, err)
+		return
+	}
+
+	ctx.JSON(201, "updated succesfully !")
+}
+
 func ParseDate[T1 any, T2 any](data1 T1, data2 T2) error {
 	byteData, err := json.Marshal(data1)
 	if err != nil {

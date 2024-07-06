@@ -127,3 +127,40 @@ func (t *teacherRepo) GetTeachersList(ctx context.Context, req models.GetListReq
 	return resp, nil
 
 }
+
+func (t *teacherRepo) UpdateTeacher(ctx context.Context, req *models.Teacher) error {
+
+	query := `
+		UPDATE
+			teachers
+		SET
+			name = $1,
+			surname = $2,
+			email = $3,
+			password = $4,
+			created_at = $5,
+			updated_at = $6
+		WHERE
+			teacher_id = $7
+		`
+
+	_, err := t.db.Exec(
+		ctx, query,
+		req.Name,
+		req.Surname,
+		req.Email,
+		req.Password,
+		req.CreatedAt,
+		req.UpdatedAt,
+		req.TeacherID,
+	)
+
+	if err != nil {
+		log.Println("error on updating information of teacher:", err)
+		return err
+	}
+
+	fmt.Println("Informations updated successfully")
+
+	return nil
+}
