@@ -3,6 +3,7 @@ package v1
 import (
 	"app/models"
 	"app/storage"
+	"context"
 	"encoding/json"
 	"time"
 
@@ -37,6 +38,21 @@ func (h *handler) CreateTeacher(ctx *gin.Context) {
 	teacher.UpdatedAt = time.Now()
 
 	h.storage.TeacherRepo().CreateTeacher(ctx, teacher)
+
+}
+
+func (h *handler) GetTeacherById(ctx *gin.Context) {
+
+	id := ctx.Param("id")
+
+	teacher, err := h.storage.TeacherRepo().GetTeacherByID(context.Background(), id)
+
+	if err != nil {
+		ctx.JSON(500, err)
+		return
+	}
+
+	ctx.JSON(200, teacher)
 
 }
 
