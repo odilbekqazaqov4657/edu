@@ -17,7 +17,8 @@ func Api(storage storage.StorageI) {
 	// teachers
 	router.POST("/create_teacher", h.CreateTeacher)
 	router.GET("/teacher_by_id/:id", h.GetTeacherById)
-	router.GET("/teachers_list", h.GetTeachersList)
+	router.GET("/teachers_list: id", h.GetTeachersList)
+	router.PUT("/update_teachers: id", h.UpdateTeacher)
 
 	router.Run(":8080")
 }
