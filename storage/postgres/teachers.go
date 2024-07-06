@@ -164,3 +164,25 @@ func (t *teacherRepo) UpdateTeacher(ctx context.Context, req *models.Teacher) er
 
 	return nil
 }
+
+func (t *teacherRepo) DeleteTeacher(ctx context.Context, id string) error {
+
+	query := `
+		DELETE 
+		FROM
+			teachers
+		WHERE
+			teacher_id=$1;
+	`
+
+	_, err := t.db.Exec(ctx, query, id)
+
+	if err != nil {
+
+		log.Println("error on deleting teacher ", err)
+		return err
+	}
+
+	fmt.Println("deleted successfully")
+	return nil
+}

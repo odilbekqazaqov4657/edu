@@ -10,5 +10,5 @@ type TeacherRepoI interface {
 	GetTeacherByID(ctx context.Context, id string) (*models.Teacher, error)
 	GetTeachersList(ctx context.Context, req models.GetListReq) (models.GetTeachersListResp, error)
 	UpdateTeacher(ctx context.Context, req *models.Teacher) error
-	//DeleteTeacher(ctx context.Context, id string) error
+	DeleteTeacher(ctx context.Context, id string) error
 }

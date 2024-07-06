@@ -19,6 +19,7 @@ func Api(storage storage.StorageI) {
 	router.GET("/teacher_by_id/:id", h.GetTeacherById)
 	router.GET("/teachers_list: id", h.GetTeachersList)
 	router.PUT("/update_teachers: id", h.UpdateTeacher)
+	router.DELETE("/delete_teacher: id", h.DeleteTeacher)
 
 	router.Run(":8080")
 }

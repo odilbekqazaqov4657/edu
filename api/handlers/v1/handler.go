@@ -5,6 +5,7 @@ import (
 	"app/storage"
 	"context"
 	"encoding/json"
+	"log"
 	"strconv"
 	"time"
 
@@ -92,6 +93,20 @@ func (h *handler) UpdateTeacher(ctx *gin.Context) {
 	}
 
 	ctx.JSON(201, "updated succesfully !")
+}
+
+func (h *handler) DeleteTeacher(ctx *gin.Context) {
+
+	id := ctx.Param("id")
+
+	err := h.storage.TeacherRepo().DeleteTeacher(context.Background(), id)
+
+	if err != nil {
+		log.Println("error on deleting teacher", err)
+		return
+	}
+
+	ctx.JSON(201, "deleted successfully")
 }
 
 func ParseDate[T1 any, T2 any](data1 T1, data2 T2) error {
