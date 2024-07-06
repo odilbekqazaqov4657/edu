@@ -5,6 +5,7 @@ import (
 	"app/storage"
 	"context"
 	"encoding/json"
+	"strconv"
 	"time"
 
 	"github.com/gin-gonic/gin"
@@ -46,6 +47,27 @@ func (h *handler) GetTeacherById(ctx *gin.Context) {
 	id := ctx.Param("id")
 
 	teacher, err := h.storage.TeacherRepo().GetTeacherByID(context.Background(), id)
+
+	if err != nil {
+		ctx.JSON(500, err)
+		return
+	}
+
+	ctx.JSON(200, teacher)
+
+}
+
+func (h *handler) GetTeachersList(ctx *gin.Context) {
+
+	var req models.GetListReq
+
+	Limit := ctx.Query("limit")
+	Page := ctx.Query("page")
+
+	req.Limit, _ = strconv.Atoi(Limit)
+	req.Page, _ = strconv.Atoi(Page)
+
+	teacher, err := h.storage.TeacherRepo().GetTeachersList(context.Background(), req)
 
 	if err != nil {
 		ctx.JSON(500, err)

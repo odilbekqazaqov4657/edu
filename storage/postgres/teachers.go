@@ -84,7 +84,46 @@ func (t *teacherRepo) GetTeacherByID(ctx context.Context, id string) (*models.Te
 
 func (t *teacherRepo) GetTeachersList(ctx context.Context, req models.GetListReq) (models.GetTeachersListResp, error) {
 
+	var teacher models.Teacher
 	resp := models.GetTeachersListResp{}
 
+	Limit := req.Limit
+	offset := (req.Page - 1) * req.Limit
+
+	query := `
+        SELECT 
+            teacher_id,
+            name,
+            surname,
+            email,
+            created_at,
+            updated_at
+        FROM 
+            teachers
+        LIMIT $1 OFFSET $2
+    `
+
+	row, err := t.db.Query(ctx, query, Limit, offset)
+
+	if err != nil {
+		log.Println("Error on scanning teachers schedule !", err)
+		return resp, err
+	}
+
+	for row.Next() {
+
+		row.Scan(
+			&teacher.TeacherID,
+			&teacher.Name,
+			&teacher.Surname,
+			&teacher.Email,
+			&teacher.CreatedAt,
+			&teacher.UpdatedAt,
+		)
+
+		resp.Teachers = append(resp.Teachers, &models.Teacher{})
+	}
+
 	return resp, nil
+
 }
